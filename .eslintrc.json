@@ -1,0 +1,37 @@
+{
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "plugins": ["unused-imports", "simple-import-sort"],
+  "extends": "next/core-web-vitals",
+  "env": { "es6": true },
+  "rules": {
+    "no-unused-vars": 1,
+    "no-console": 1,
+    "jsx-a11y/alt-text": 2,
+    "react/react-in-jsx-scope": 0,
+    "react-hooks/exhaustive-deps": 0,
+    "padding-line-between-statements": [
+      "error",
+      {
+        "blankLine": "always",
+        "prev": "import",
+        "next": "function"
+      }
+    ],
+    "react/display-name": [
+      0,
+      {
+        "ignoreTranspilerName": false
+      }
+    ],
+    "unused-imports/no-unused-imports": "warn",
+    "import/newline-after-import": [
+      "error",
+      {
+        "count": 1
+      }
+    ],
+    "simple-import-sort/imports": "warn"
+  }
+}
