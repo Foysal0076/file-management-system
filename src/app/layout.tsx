@@ -2,6 +2,7 @@ import '@/styles/globals.css'
 import '@/styles/globals.scss'
 
 import { Open_Sans } from 'next/font/google'
+import { ToastContainer } from 'react-toastify'
 
 import { AuthProvider } from '@/auth/AuthProvider'
 import { Footer } from '@/components/Footer'
@@ -44,6 +45,16 @@ export default function RootLayout({
             <Footer />
           </div>
         </AuthProvider>
+        <ToastContainer
+          position='top-right'
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          draggable
+          pauseOnHover
+          pauseOnFocusLoss={false}
+        />
       </body>
     </html>
   )
