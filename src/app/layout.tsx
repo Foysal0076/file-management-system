@@ -3,6 +3,7 @@ import '@/styles/globals.scss'
 
 import { Open_Sans } from 'next/font/google'
 
+import { AuthProvider } from '@/auth/AuthProvider'
 import { Footer } from '@/components/Footer'
 import { Navbar } from '@/components/Navbar'
 
@@ -34,13 +35,15 @@ export default function RootLayout({
         href='/assets/favicons/favicon.ico'
       />
       <body suppressHydrationWarning>
-        <div className='flex min-h-screen flex-col justify-between bg-neutral-0 dark:bg-neutral-900'>
-          <div>
-            <Navbar />
-            <main>{children}</main>
+        <AuthProvider>
+          <div className='flex min-h-screen flex-col justify-between bg-neutral-0 dark:bg-neutral-900'>
+            <div>
+              <Navbar />
+              <main>{children}</main>
+            </div>
+            <Footer />
           </div>
-          <Footer />
-        </div>
+        </AuthProvider>
       </body>
     </html>
   )
