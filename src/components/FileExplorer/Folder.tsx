@@ -5,10 +5,15 @@ import { AwsFolder } from '@/redux/apiQueries/apiQueries.type'
 
 type Props = {
   folder: AwsFolder
+  onFolderClick: (folderPath: string) => void
 }
 
-const Folder = ({ folder }: Props) => {
+const Folder = ({ folder, onFolderClick }: Props) => {
   const folderName = folder.prefix.split('/').at(-2)
+
+  const _onFolderClick = () => {
+    onFolderClick(folder.prefix)
+  }
 
   return (
     <Box
@@ -26,7 +31,8 @@ const Folder = ({ folder }: Props) => {
           border: '1px solid rgba(0,0,0,0.2)',
           transition: '0.3s',
         },
-      }}>
+      }}
+      onClick={_onFolderClick}>
       <FolderIcon width={80} />
       <Typography variant='body2' className='line-clamp-2 text-center'>
         {folderName}

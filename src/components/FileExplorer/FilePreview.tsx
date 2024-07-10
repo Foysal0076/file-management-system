@@ -19,7 +19,7 @@ const FilePreviewModal = ({ url, handleClose, open, fileType }: Props) => {
       return (
         <object data={url} width='100%' height='100%' type='application/pdf'>
           <iframe src={url} width='100%' height='100%'>
-            <p>
+            <p className='text-center'>
               This browser does not support PDFs. Please download the PDF to
               view it: <a href={url}>Download PDF</a>.
             </p>
@@ -34,7 +34,9 @@ const FilePreviewModal = ({ url, handleClose, open, fileType }: Props) => {
           alignContent={'center'}
           justifyContent={'center'}
           width={'90%'}
-          height={'90%'}>
+          height={'90%'}
+          marginLeft={'auto'}
+          marginRight={'auto'}>
           <Image src={url} alt='Preview' className='object-contain' fill />
         </Box>
       )

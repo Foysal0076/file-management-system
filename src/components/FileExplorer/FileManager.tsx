@@ -2,6 +2,7 @@
 import { CircularProgress } from '@mui/material'
 import { useEffect, useState } from 'react'
 
+import BreadCrumb from '@/components/FileExplorer/BreadCrumb'
 import FileItem from '@/components/FileExplorer/FileItem'
 import FilePreviewModal from '@/components/FileExplorer/FilePreview'
 import Folder from '@/components/FileExplorer/Folder'
@@ -17,6 +18,9 @@ const FileManager = () => {
   const [folders, setFolders] = useState<AwsFolder[]>([])
   const [openPreview, setOpenPreview] = useState(false)
   const [selectedFile, setSelectedFile] = useState<AwsFile | null>(null)
+  const [selectedFolder, setSelectedFolder] = useState<string>('')
+  const [pathList, setPathList] = useState<string[]>([])
+
   const { data: signedUrl, isLoading: isFetchingSignedUrl } =
     useFetchAwsSignedUrlQuery(
       {
@@ -25,8 +29,8 @@ const FileManager = () => {
       { skip: !selectedFile }
     )
 
-  const { data, isLoading } = useFetchFilesAndFoldersQuery({
-    folder: 'First Folder/',
+  const { data, isLoading, isSuccess } = useFetchFilesAndFoldersQuery({
+    folder: selectedFolder,
   })
 
   const handleOpenPreview = (file: AwsFile) => {
@@ -35,18 +39,27 @@ const FileManager = () => {
   }
 
   const handleClosePreview = () => {
-    setOpenPreview(false)
     setSelectedFile(null)
+    setOpenPreview(false)
   }
 
-  console.log(data)
+  const onFolderPathClick = (folderPath: string) => {
+    setSelectedFolder(folderPath)
+  }
+
+  const onFolderClick = (folderPath: string) => {
+    setSelectedFolder(folderPath)
+  }
 
   useEffect(() => {
     if (data) {
+      setPathList(selectedFolder.split('/').filter((path) => path !== ''))
       setFiles(data.files)
       setFolders(data.folders)
     }
   }, [data])
+
+  const isEmptyFolder = isSuccess && files.length === 0 && folders.length === 0
 
   if (isLoading) {
     return (
@@ -58,10 +71,20 @@ const FileManager = () => {
 
   return (
     <div>
+      <div className='mb-8'>
+        <BreadCrumb pathList={pathList} onFolderPathClick={onFolderPathClick} />
+      </div>
+      {isEmptyFolder && (
+        <div className='flex h-[40vh] items-center justify-center'>
+          <div className='text-center text-lg font-semibold'>
+            No file or folder found.
+          </div>
+        </div>
+      )}
       <ul className='grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-6 lg:gap-8 xl:grid-cols-8'>
         {folders.map((folder) => (
           <li key={folder.prefix}>
-            <Folder folder={folder} />
+            <Folder folder={folder} onFolderClick={onFolderClick} />
           </li>
         ))}
         {files.map((file) => (
