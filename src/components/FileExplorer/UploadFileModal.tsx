@@ -72,6 +72,19 @@ const UploadFileModal = ({ open, onClose }: Props) => {
       if (file === null) {
         return toast.error('Please select a file')
       }
+      //accept only jpg jpeg png and pdf
+      const allowedFileTypes = [
+        'image/jpeg',
+        'image/png',
+        'image/jpg',
+        'application/pdf',
+      ]
+      if (!allowedFileTypes.includes(file.type)) {
+        return toast.error(
+          'Invalid file type: only jpg, jpeg, png and pdf are allowed'
+        )
+      }
+
       const formData = new FormData()
       formData.append('folderName', currentFolder) // specify the folder name
       formData.append('file', file)
@@ -144,6 +157,7 @@ const UploadFileModal = ({ open, onClose }: Props) => {
               type='file'
               ref={fileInputRef}
               onChange={handleFileChange}
+              accept='image/png, image/jpeg, image/jpg, application/pdf'
             />
             <UploadCloudIcon width={80} />
           </button>
