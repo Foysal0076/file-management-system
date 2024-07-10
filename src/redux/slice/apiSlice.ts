@@ -11,6 +11,6 @@ export const apiSlice = createApi({
     },
   }),
   keepUnusedDataFor: 600, //in seconds
-  tagTypes: ['Folders'],
+  tagTypes: ['FilesAndFolders'],
   endpoints: (builder) => ({}),
 })

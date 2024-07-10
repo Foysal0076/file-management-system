@@ -163,7 +163,7 @@ export const authOptions: NextAuthOptions = {
       //console.log(user)
     },
     session: (message) => {
-      console.log(message.session)
+      // console.log(message.session)
     },
   },
 }

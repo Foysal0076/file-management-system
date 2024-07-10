@@ -1,8 +1,17 @@
+import { PutObjectCommand } from '@aws-sdk/client-s3'
 import { NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
 
+import { authOptions } from '@/auth/options'
 import s3 from '@/lib/aws'
 
 export async function POST(req: Request) {
+  //check auth, if no session, return 401
+  const session = await getServerSession(authOptions)
+  if (!session || !session.user) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+  }
+
   const { folderName } = await req.json()
 
   if (!folderName) {
@@ -13,12 +22,13 @@ export async function POST(req: Request) {
   }
 
   const params = {
-    Bucket: process.env.AWS_BUCKET_NAME!,
+    Bucket: process.env.S3_BUCKET_NAME!,
     Key: `${folderName}/`, // S3 uses '/' to represent folders
   }
 
   try {
-    await s3.putObject(params).promise()
+    const command = new PutObjectCommand(params)
+    await s3.send(command)
     return NextResponse.json({ message: 'Folder created successfully' })
   } catch (error) {
     return NextResponse.json(

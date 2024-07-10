@@ -1,2 +1,5 @@
+export { FolderIcon } from './FolderIcon'
+export { ImageIcon } from './ImageIcon'
+export { PdfIcon } from './PdfIcon'
 export { ToggleDarkIcon } from './ToggleDarkIcon'
 export { ToggleLightIcon } from './ToggleLightIcon'

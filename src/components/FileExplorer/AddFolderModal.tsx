@@ -1,5 +1,8 @@
 import { Box, Button, Modal, TextField } from '@mui/material'
 import { useState } from 'react'
+import { toast } from 'react-toastify'
+
+import { useCreateS3FolderMutation } from '@/redux/apiQueries/s3bucket.queries'
 
 const style = {
   position: 'absolute',
@@ -21,12 +24,21 @@ type Props = {
 const AddFolderModal = ({ onClose, open }: Props) => {
   const [folderName, setFolderName] = useState('')
 
+  const [createS3Folder] = useCreateS3FolderMutation()
+
   const handleFolderNameChange = (event: any) =>
     setFolderName(event.target.value)
 
-  const handleSubmit = () => {
-    console.log(folderName) // Here you can handle the submission, e.g., updating state or sending to an API
-    // onClose()
+  const handleSubmit = async () => {
+    console.log(folderName)
+    const response = await createS3Folder(folderName).unwrap()
+    console.log(response)
+    if (response?.data) {
+      toast.success(response.data?.message ?? 'Folder created successfully')
+      onClose()
+    } else if (response.error) {
+      toast.error(response.error?.data?.message ?? 'Error creating folder')
+    }
   }
 
   return (

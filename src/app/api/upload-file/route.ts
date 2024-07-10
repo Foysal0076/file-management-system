@@ -1,4 +1,5 @@
 // app/api/uploadFile/route.ts
+import { PutObjectCommand } from '@aws-sdk/client-s3'
 import { File } from 'formidable'
 import { readFileSync } from 'fs'
 import { NextResponse } from 'next/server'
@@ -13,8 +14,8 @@ const uploadFile = async (file: File, folderName: string) => {
     Body: fileContent,
     ContentType: file.mimetype || 'application/octet-stream',
   }
-
-  return s3.upload(params).promise()
+  const command = new PutObjectCommand(params)
+  return s3.send(command)
 }
 
 export async function POST(request: Request) {
