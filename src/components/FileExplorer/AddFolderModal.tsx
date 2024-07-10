@@ -1,8 +1,21 @@
-import { Box, Button, Modal, TextField } from '@mui/material'
+'use client'
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Modal,
+  TextField,
+  Typography,
+} from '@mui/material'
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 
-import { useCreateS3FolderMutation } from '@/redux/apiQueries/s3bucket.queries'
+import {
+  useCreateS3FolderMutation,
+  useLazyFetchFilesAndFoldersQuery,
+} from '@/redux/apiQueries/s3bucket.queries'
+import { getSelectedFolderPath } from '@/redux/slice/stateSlice'
 
 const style = {
   position: 'absolute',
@@ -24,20 +37,41 @@ type Props = {
 const AddFolderModal = ({ onClose, open }: Props) => {
   const [folderName, setFolderName] = useState('')
 
-  const [createS3Folder] = useCreateS3FolderMutation()
+  const [createS3Folder, { isLoading: isCreatingFolder }] =
+    useCreateS3FolderMutation()
+
+  const currentFolder = useSelector(getSelectedFolderPath)
+
+  const [updateFetchedFilesAndFolders] = useLazyFetchFilesAndFoldersQuery()
 
   const handleFolderNameChange = (event: any) =>
     setFolderName(event.target.value)
 
   const handleSubmit = async () => {
-    console.log(folderName)
-    const response = await createS3Folder(folderName).unwrap()
-    console.log(response)
-    if (response?.data) {
+    console.log({ currentFolder, folderName })
+    if (isCreatingFolder) return
+    if (!folderName) {
+      return toast.error('Folder name cannot be empty', {
+        toastId: 'empty_name',
+      })
+    }
+    // check if the string has any aws unsupported folder character
+    const hasUnsupportedCharacter = /[^a-zA-Z0-9-_ ]/.test(folderName)
+    if (hasUnsupportedCharacter) {
+      return toast.error(
+        'Folder name should only contain letters, numbers, hyphen and underscore',
+        { toastId: 'unsupported_character' }
+      )
+    }
+    try {
+      const response = await createS3Folder(
+        `${currentFolder}${folderName}`
+      ).unwrap()
+      updateFetchedFilesAndFolders({ folder: currentFolder }) // update the current folder cache
       toast.success(response.data?.message ?? 'Folder created successfully')
       onClose()
-    } else if (response.error) {
-      toast.error(response.error?.data?.message ?? 'Error creating folder')
+    } catch (error: any) {
+      toast.error(error?.data?.message ?? 'Error creating folder')
     }
   }
 
@@ -49,6 +83,7 @@ const AddFolderModal = ({ onClose, open }: Props) => {
         aria-labelledby='modal-add-folder'
         aria-describedby='modal-add-a-new-folder'>
         <Box sx={style}>
+          <Typography>Create New Folder</Typography>
           <TextField
             fullWidth
             label='Folder Name'
@@ -57,13 +92,24 @@ const AddFolderModal = ({ onClose, open }: Props) => {
             onChange={handleFolderNameChange}
             margin='normal'
           />
-          <Box className='mt-2 flex justify-end'>
+          <Box className='mt-2 flex justify-end gap-4'>
+            <Button
+              onClick={onClose}
+              variant='outlined'
+              color='error'
+              className='justify-end'>
+              Cancel
+            </Button>
             <Button
               onClick={handleSubmit}
               variant='outlined'
               color='inherit'
-              className='justify-end'>
-              Submit
+              className='flex min-w-[5.635rem] justify-center'>
+              {isCreatingFolder ? (
+                <CircularProgress size={24} sx={{ color: 'black' }} />
+              ) : (
+                'Create'
+              )}
             </Button>
           </Box>
         </Box>

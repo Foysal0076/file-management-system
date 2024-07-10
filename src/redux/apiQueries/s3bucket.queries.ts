@@ -40,4 +40,5 @@ export const {
   useFetchFilesAndFoldersQuery,
   useCreateS3FolderMutation,
   useFetchAwsSignedUrlQuery,
+  useLazyFetchFilesAndFoldersQuery,
 } = s3bucketQueries

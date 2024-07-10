@@ -1,6 +1,7 @@
 'use client'
 import { CircularProgress } from '@mui/material'
 import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 import BreadCrumb from '@/components/FileExplorer/BreadCrumb'
 import FileItem from '@/components/FileExplorer/FileItem'
@@ -11,6 +12,7 @@ import {
   useFetchAwsSignedUrlQuery,
   useFetchFilesAndFoldersQuery,
 } from '@/redux/apiQueries/s3bucket.queries'
+import { setSelectedFolderPath } from '@/redux/slice/stateSlice'
 import { getFileType } from '@/utils/helpers'
 
 const FileManager = () => {
@@ -20,6 +22,8 @@ const FileManager = () => {
   const [selectedFile, setSelectedFile] = useState<AwsFile | null>(null)
   const [selectedFolder, setSelectedFolder] = useState<string>('')
   const [pathList, setPathList] = useState<string[]>([])
+
+  const dispatch = useDispatch()
 
   const { data: signedUrl, isLoading: isFetchingSignedUrl } =
     useFetchAwsSignedUrlQuery(
@@ -45,10 +49,7 @@ const FileManager = () => {
 
   const onFolderPathClick = (folderPath: string) => {
     setSelectedFolder(folderPath)
-  }
-
-  const onFolderClick = (folderPath: string) => {
-    setSelectedFolder(folderPath)
+    dispatch(setSelectedFolderPath(folderPath))
   }
 
   useEffect(() => {
@@ -84,7 +85,7 @@ const FileManager = () => {
       <ul className='grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-6 lg:gap-8 xl:grid-cols-8'>
         {folders.map((folder) => (
           <li key={folder.prefix}>
-            <Folder folder={folder} onFolderClick={onFolderClick} />
+            <Folder folder={folder} onFolderClick={onFolderPathClick} />
           </li>
         ))}
         {files.map((file) => (
