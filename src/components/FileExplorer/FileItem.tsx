@@ -2,14 +2,16 @@ import { Box, Typography } from '@mui/material'
 
 import { ImageIcon } from '@/components/Common/Icons'
 import { PdfIcon } from '@/components/Common/Icons/PdfIcon'
+import { ContextMenuSelectedItem } from '@/components/FileExplorer/FileManager'
 import { AwsFile } from '@/redux/apiQueries/apiQueries.type'
 
 type Props = {
   file: AwsFile
   handleOpenPreview: (file: AwsFile) => void
+  onRightClick: (e: React.MouseEvent, item: ContextMenuSelectedItem) => void
 }
 
-const FileItem = ({ file, handleOpenPreview }: Props) => {
+const FileItem = ({ file, handleOpenPreview, onRightClick }: Props) => {
   const fileTypeExtension = file.key.split('.').pop()
 
   const isPdf = fileTypeExtension === 'pdf'
@@ -22,6 +24,9 @@ const FileItem = ({ file, handleOpenPreview }: Props) => {
   const _handleOpenPreview = () => {
     handleOpenPreview(file)
   }
+  const _onRightClick = (e: React.MouseEvent) => {
+    onRightClick(e, { path: file.key, type: 'file' })
+  }
 
   return (
     <Box
@@ -32,6 +37,7 @@ const FileItem = ({ file, handleOpenPreview }: Props) => {
       padding={0.25}
       paddingTop={1}
       onClick={_handleOpenPreview}
+      onContextMenu={(e) => onRightClick(e, { path: file.key, type: 'file' })}
       sx={{
         cursor: 'pointer',
         borderRadius: 0.25,

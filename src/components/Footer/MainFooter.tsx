@@ -5,9 +5,9 @@ export const MainFooter = () => {
   const year = new Date().getFullYear()
   return (
     <Box>
-      <footer className='bg-gray-800 text-white p-4 text-center'>
+      <footer className='p-4 text-center'>
         <Typography component='p'>
-          &copy; {year} Sophisticated File Management
+          &copy; {year} Sophisticated File Management System
         </Typography>
       </footer>
     </Box>

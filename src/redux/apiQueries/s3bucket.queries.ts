@@ -33,28 +33,20 @@ export const s3bucketQueries = apiSlice.injectEndpoints({
         params,
       }),
     }),
-    uploadFile: builder.mutation({
-      query: (formData: any) => {
-        const body = new FormData()
-        body.append('folderName', formData.folderPath)
-        body.append('file', formData.file)
-        return {
-          url: '/upload-file',
-          method: 'POST',
-          body: body,
-        }
-      },
+    deleteFolderWithFiles: builder.mutation({
+      query: (folderName: string) => ({
+        url: '/delete-folder-with-files',
+        method: 'POST',
+        body: { folderName },
+      }),
     }),
-    // uploadFile: builder.mutation({
-    //   query: (formData: FormData) => ({
-    //     url: '/upload-file',
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'multipart/form-data;',
-    //     },
-    //     body: formData,
-    //   }),
-    // }),
+    deleteFile: builder.mutation({
+      query: (filePath: string) => ({
+        url: '/delete-file',
+        method: 'POST',
+        body: { filePath },
+      }),
+    }),
   }),
 })
 
@@ -63,5 +55,6 @@ export const {
   useCreateS3FolderMutation,
   useFetchAwsSignedUrlQuery,
   useLazyFetchFilesAndFoldersQuery,
-  useUploadFileMutation,
+  useDeleteFolderWithFilesMutation,
+  useDeleteFileMutation,
 } = s3bucketQueries
