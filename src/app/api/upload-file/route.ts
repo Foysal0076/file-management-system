@@ -1,42 +1,39 @@
 // app/api/uploadFile/route.ts
 import { PutObjectCommand } from '@aws-sdk/client-s3'
-import { File } from 'formidable'
-import { readFileSync } from 'fs'
 import { NextResponse } from 'next/server'
 
-import s3 from '@/lib/aws'
+import s3Client from '@/lib/aws'
 
-const uploadFile = async (file: File, folderName: string) => {
-  const fileContent = readFileSync(file.filepath)
-  const params = {
-    Bucket: process.env.AWS_BUCKET_NAME!,
-    Key: `${folderName}/${file.originalFilename}`,
-    Body: fileContent,
-    ContentType: file.mimetype || 'application/octet-stream',
-  }
-  const command = new PutObjectCommand(params)
-  return s3.send(command)
+export const config = {
+  api: {
+    bodyParser: false,
+  },
 }
 
 export async function POST(request: Request) {
-  const formData = await request.formData()
-
-  const folderName = formData.get('folderName') as string
-  const file = formData.get('file') as unknown as File
-
-  if (!folderName || !file) {
-    return NextResponse.json(
-      { message: 'Folder name and file are required' },
-      { status: 400 }
-    )
-  }
-
   try {
-    await uploadFile(file, folderName)
+    const formData = await request.formData()
+    const folderName = formData.get('folderName') as string
+    const file = formData.get('file') as File
+
+    if (!file) {
+      return NextResponse.json({ message: 'File is required' }, { status: 400 })
+    }
+
+    const arrayBuffer = await file.arrayBuffer()
+    const params = {
+      Bucket: process.env.S3_BUCKET_NAME!,
+      Key: `${folderName}${file.name}`,
+      Body: Buffer.from(arrayBuffer),
+      ContentType: file.type,
+    }
+
+    await s3Client.send(new PutObjectCommand(params))
     return NextResponse.json({ message: 'File uploaded successfully' })
-  } catch (error) {
+  } catch (error: any) {
+    console.error('Error uploading file', error)
     return NextResponse.json(
-      { message: `Error uploading file: ${(error as Error).message}` },
+      { message: `Error uploading file: ${error.message}` },
       { status: 500 }
     )
   }

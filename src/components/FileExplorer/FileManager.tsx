@@ -82,7 +82,7 @@ const FileManager = () => {
           </div>
         </div>
       )}
-      <ul className='grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-6 lg:gap-8 xl:grid-cols-8'>
+      <ul className='grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 lg:gap-8 xl:grid-cols-8'>
         {folders.map((folder) => (
           <li key={folder.prefix}>
             <Folder folder={folder} onFolderClick={onFolderPathClick} />

@@ -48,7 +48,6 @@ const AddFolderModal = ({ onClose, open }: Props) => {
     setFolderName(event.target.value)
 
   const handleSubmit = async () => {
-    console.log({ currentFolder, folderName })
     if (isCreatingFolder) return
     if (!folderName) {
       return toast.error('Folder name cannot be empty', {

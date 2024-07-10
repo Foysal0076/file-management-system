@@ -33,6 +33,28 @@ export const s3bucketQueries = apiSlice.injectEndpoints({
         params,
       }),
     }),
+    uploadFile: builder.mutation({
+      query: (formData: any) => {
+        const body = new FormData()
+        body.append('folderName', formData.folderPath)
+        body.append('file', formData.file)
+        return {
+          url: '/upload-file',
+          method: 'POST',
+          body: body,
+        }
+      },
+    }),
+    // uploadFile: builder.mutation({
+    //   query: (formData: FormData) => ({
+    //     url: '/upload-file',
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'multipart/form-data;',
+    //     },
+    //     body: formData,
+    //   }),
+    // }),
   }),
 })
 
@@ -41,4 +63,5 @@ export const {
   useCreateS3FolderMutation,
   useFetchAwsSignedUrlQuery,
   useLazyFetchFilesAndFoldersQuery,
+  useUploadFileMutation,
 } = s3bucketQueries

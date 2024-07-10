@@ -3,10 +3,16 @@
 import { useState } from 'react'
 
 import AddFolderModal from '@/components/FileExplorer/AddFolderModal'
+import UploadFileModal from '@/components/FileExplorer/UploadFileModal'
 
 const AddNewButton = () => {
   const [openFolderModal, setOpenFolderModal] = useState(false)
   const [openAddFileModal, setOpenAddFileModal] = useState(false)
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false)
+
+  const handleOpenUploadModal = () => setIsUploadModalOpen(true)
+
+  const handleCloseUploadModal = () => setIsUploadModalOpen(false)
 
   const handleCloseFolderModal = () => {
     setOpenFolderModal(false)
@@ -16,14 +22,6 @@ const AddNewButton = () => {
     setOpenFolderModal(true)
   }
 
-  const handleCloseAddFileModal = () => {
-    setOpenAddFileModal(false)
-  }
-
-  const handleOpenAddFileModal = () => {
-    setOpenAddFileModal(true)
-  }
-
   return (
     <>
       <div className='group relative pt-8'>
@@ -31,7 +29,7 @@ const AddNewButton = () => {
           <div className='bg-white shadow-none rounded-sm border border-neutral-900'>
             <button
               className='w-full cursor-pointer px-4 py-2 text-right hover:bg-neutral-20'
-              onClick={handleOpenAddFileModal}>
+              onClick={handleOpenUploadModal}>
               Add File
             </button>
             <hr className='text-neutral-500' />
@@ -47,6 +45,11 @@ const AddNewButton = () => {
         </button>
       </div>
       <AddFolderModal open={openFolderModal} onClose={handleCloseFolderModal} />
+
+      <UploadFileModal
+        open={isUploadModalOpen}
+        onClose={handleCloseUploadModal}
+      />
     </>
   )
 }
