@@ -30,7 +30,7 @@ const DashboardHomePage = () => {
     <Box className='py-20'>
       {isLoading && (
         <Box className='my-20 flex items-center justify-center'>
-          <CircularProgress size={32} />
+          <CircularProgress size={32} color='inherit' />
         </Box>
       )}
       {isLogged && (
@@ -50,14 +50,26 @@ const DashboardHomePage = () => {
               </Typography>
             </Typography>
           </Box>
-          <Box display={'flex'} justifyContent={'center'} my={4} gap={4}>
+          <Box
+            display={'flex'}
+            flexDirection={'column'}
+            alignItems={'center'}
+            my={4}
+            gap={2}>
             <Link href='/dashboard/file-explorer'>
               <Button
                 variant='outlined'
                 color='inherit'
-                onClick={fetchWithAccessToken}
                 className='max-w-fit-content'>
                 File Explorer
+              </Button>
+            </Link>
+            <Link href='/dashboard/draw'>
+              <Button
+                variant='outlined'
+                color='inherit'
+                className='max-w-fit-content'>
+                Draw
               </Button>
             </Link>
           </Box>
