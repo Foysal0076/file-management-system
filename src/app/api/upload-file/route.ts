@@ -4,12 +4,6 @@ import { NextResponse } from 'next/server'
 
 import s3Client from '@/lib/aws'
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-}
-
 export async function POST(request: Request) {
   try {
     const formData = await request.formData()
