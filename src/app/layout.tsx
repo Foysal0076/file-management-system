@@ -19,9 +19,9 @@ const openSans = Open_Sans({
 })
 
 export const metadata = {
-  title: 'Next.js + Tailwind CSS Starter',
+  title: 'File management and drawing app',
   description:
-    'A starter template to build amazing static websites with Next.js and Tailwind CSS',
+    'Amazon S3 bucket file management system, and drawing canvas using fabric.js',
 }
 
 export default function RootLayout({
@@ -36,6 +36,23 @@ export default function RootLayout({
         type='image/ico'
         sizes='32x32'
         href='/assets/favicons/favicon.ico'
+      />
+      <link
+        rel='apple-touch-icon'
+        sizes='180x180'
+        href='/assets/favicons/apple-touch-icon.png'
+      />
+      <link
+        rel='icon'
+        type='image/png'
+        sizes='32x32'
+        href='/assets/favicons/favicon-32x32.png'
+      />
+      <link
+        rel='icon'
+        type='image/png'
+        sizes='16x16'
+        href='/assets/favicons/favicon-16x16.png'
       />
       <body suppressHydrationWarning>
         <ReduxProvider>
