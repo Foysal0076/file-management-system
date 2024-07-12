@@ -11,7 +11,6 @@ export const drawCircle = (
 ) => {
   if (!canvas) return
   const canvasCenter = canvas.getCenterPoint()
-
   const fillColor =
     drawingFill === DrawingFills.SOLID ? drawingColor : 'transparent'
 
@@ -23,6 +22,7 @@ export const drawCircle = (
     originX: 'center',
     originY: 'center',
     fill: fillColor,
+    stroke: drawingColor,
     strokeWidth: strokeWidth,
     objectCaching: false,
     padding: 10,

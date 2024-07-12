@@ -18,8 +18,8 @@ export const DrawingTools = {
 } as const
 
 export const DrawingColors = {
-  BLACK: 'black',
   WHITE: 'white',
+  BLACK: 'black',
   RED: 'red',
   GREEN: 'green',
   BLUE: 'blue',
@@ -32,6 +32,6 @@ export const DrawingStrokes = {
 } as const
 
 export const DrawingFills = {
-  SOLID: 'solid',
-  HOLLOW: 'hollow',
+  SOLID: true,
+  HOLLOW: false,
 } as const

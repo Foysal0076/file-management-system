@@ -73,7 +73,7 @@ export const CanvasContextProvider = ({
   )
   const [drawingThickness, setDrawingThickness] = useState<number>(2)
   const [drawingFill, setDrawingFill] = useState<DrawingFill>(
-    DrawingFills.SOLID
+    DrawingFills.HOLLOW
   )
   const [drawingTool, setDrawingTool] = useState<'select' | 'draw' | 'erase'>(
     'draw'
