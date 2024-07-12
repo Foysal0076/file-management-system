@@ -1,4 +1,5 @@
 import { Checkbox, FormControlLabel, Slider, Typography } from '@mui/material'
+import clsx from 'clsx'
 
 import { BrushIcon, TextIcon } from '@/components/Common/Icons'
 import AddUserInputText from '@/components/Drawing/AddUserInputText'
@@ -9,6 +10,7 @@ import {
   DrawingFills,
   DrawingModes,
   DrawingTools as Tools,
+  ToolbarPositions,
 } from '@/utils/constants/common'
 
 const DrawingTools = () => {
@@ -17,6 +19,7 @@ const DrawingTools = () => {
     drawingColor,
     drawingThickness,
     drawingFill,
+    toolbarPosition,
     setDrawingMode,
     setDrawingTool,
     setDrawingThickness,
@@ -35,10 +38,17 @@ const DrawingTools = () => {
     }
   }
   const fillRule = drawingFill === DrawingFills.SOLID
-  console.log({ fillRule })
+  const isRight = toolbarPosition === ToolbarPositions.RIGHT
+  const isLeft = toolbarPosition === ToolbarPositions.LEFT
+  const isTop = toolbarPosition === ToolbarPositions.TOP
+
   return (
     <div>
-      <div className={`flex flex-col gap-4 `}>
+      <div
+        className={clsx(`flex flex-wrap gap-4`, {
+          'flex-row items-center': isTop,
+          'items-center xl:flex-col xl:items-start': isLeft || isRight,
+        })}>
         <Typography>Options</Typography>
         <button
           className='flex items-center gap-2 text-neutral-200 hover:text-primary-500'
@@ -58,13 +68,20 @@ const DrawingTools = () => {
         </button>
 
         <FormControlLabel
-          className='-mt-3 !text-neutral-200'
+          className={clsx('!text-neutral-200', {
+            'xl:-mt-3': isLeft || isRight,
+          })}
           control={
             <Checkbox defaultChecked={fillRule} onChange={onChangeFilRule} />
           }
           label={<span className='ml-0.5 text-neutral-200'>Fill</span>}
         />
-        <div className='mt-2 flex flex-col gap-1'>
+        <div
+          className={clsx(
+            'flex items-center gap-3',
+            { 'min-w-[15rem]': isTop },
+            { 'min-w-[15rem] xl:min-w-full': isRight || isLeft }
+          )}>
           <Typography variant='body2' className='text-neutral-200'>
             Thickness
           </Typography>
@@ -78,7 +95,7 @@ const DrawingTools = () => {
             onChange={onChangeStrokeWidth}
           />
         </div>
-        <div className='mt-2 flex flex-col gap-1'>
+        <div className='flex w-full max-w-[14.75rem] items-center'>
           <AddUserInputText />
         </div>
       </div>

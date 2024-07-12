@@ -35,3 +35,9 @@ export const DrawingFills = {
   SOLID: true,
   HOLLOW: false,
 } as const
+
+export const ToolbarPositions = {
+  TOP: 'Top',
+  LEFT: 'Left',
+  RIGHT: 'Right',
+} as const

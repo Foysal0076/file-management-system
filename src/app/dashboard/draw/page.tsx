@@ -1,4 +1,5 @@
 'use client'
+import clsx from 'clsx'
 import * as fabric from 'fabric'
 import { useEffect } from 'react'
 
@@ -7,10 +8,20 @@ import { useCanvasContext } from '@/context/CanvasContext'
 import { handleKeyDownEvent } from '@/utils/canvas/handleKeyDownEvent'
 import { objectSelected } from '@/utils/canvas/utils'
 import { zoom } from '@/utils/canvas/zoom'
+import { ToolbarPositions } from '@/utils/constants/common'
 
 const DrawPage = () => {
-  const { fabricRef, canvas, setCanvas, setObjectSelectForDelete } =
-    useCanvasContext()
+  const {
+    fabricRef,
+    toolbarPosition,
+    canvas,
+    setCanvas,
+    setObjectSelectForDelete,
+  } = useCanvasContext()
+
+  const isRight = toolbarPosition === ToolbarPositions.RIGHT
+  const isLeft = toolbarPosition === ToolbarPositions.LEFT
+  const isTop = toolbarPosition === ToolbarPositions.TOP
 
   useEffect(() => {
     if (!fabricRef?.current) return
@@ -57,14 +68,24 @@ const DrawPage = () => {
   }, [canvas])
 
   return (
-    <div className='relative flex flex-col justify-center gap-6 py-20 xl:flex-row'>
-      <CanvasToolbar />
-      <canvas
-        width={800}
-        height={667}
-        className='rounded-sm border border-neutral-50'
-        ref={fabricRef}
-      />
+    <div
+      className={clsx(
+        'relative flex  gap-6 pb-20 pt-8 ',
+        { 'flex-col justify-center': isTop },
+        { 'xl:flex-row': isLeft },
+        { 'xl:flex-row-reverse': isRight }
+      )}>
+      <div className='flex justify-center'>
+        <CanvasToolbar />
+      </div>
+      <div className='flex justify-center'>
+        <canvas
+          width={800}
+          height={667}
+          className='rounded-sm border border-neutral-50'
+          ref={fabricRef}
+        />
+      </div>
     </div>
   )
 }

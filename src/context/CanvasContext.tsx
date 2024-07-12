@@ -6,12 +6,15 @@ import {
   DrawingColor,
   DrawingFill,
   DrawingMode,
+  DrawingTool,
+  ToolbarPositionType,
 } from '@/components/Drawing/drawing.types'
 import {
   DrawingColors,
   DrawingFills,
   DrawingModes,
   DrawingTools,
+  ToolbarPositions,
 } from '@/utils/constants/common'
 
 interface CanvasContextType {
@@ -28,11 +31,11 @@ interface CanvasContextType {
   setDrawingFill: (fill: DrawingFill) => void
   drawingTool: 'select' | 'draw' | 'erase'
   setDrawingTool: (tool: 'select' | 'draw' | 'erase') => void
-  userInputText: string
-  setUserInputText: (text: string) => void
   objectSelectForDelete: boolean
   setObjectSelectForDelete: (select: boolean) => void
   colorList: string[]
+  toolbarPosition: ToolbarPositionType
+  setToolbarPosition: (position: ToolbarPositionType) => void
 }
 const colorList = Object.values(DrawingColors)
 const CanvasContext = createContext<CanvasContextType>({
@@ -44,9 +47,7 @@ const CanvasContext = createContext<CanvasContextType>({
   drawingThickness: 5,
   drawingFill: DrawingFills.HOLLOW,
   drawingTool: DrawingTools.DRAW,
-  userInputText: '',
   objectSelectForDelete: false,
-  setUserInputText: () => {},
   setObjectSelectForDelete: () => {},
   setDrawingMode: () => {},
   setDrawingColor: () => {},
@@ -54,6 +55,8 @@ const CanvasContext = createContext<CanvasContextType>({
   setDrawingFill: () => {},
   setDrawingTool: () => {},
   colorList,
+  toolbarPosition: ToolbarPositions.LEFT,
+  setToolbarPosition: () => {},
 })
 
 interface CanvasContextProviderProps {
@@ -65,7 +68,6 @@ export const CanvasContextProvider = ({
 }: CanvasContextProviderProps) => {
   const fabricRef = useRef<fabric.Canvas | null>(null)
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null)
-  const [userInputText, setUserInputText] = useState('')
   const [objectSelectForDelete, setObjectSelectForDelete] = useState(false)
   const [drawingMode, setDrawingMode] = useState<DrawingMode>(DrawingModes.FREE)
   const [drawingColor, setDrawingColor] = useState<DrawingColor>(
@@ -75,8 +77,9 @@ export const CanvasContextProvider = ({
   const [drawingFill, setDrawingFill] = useState<DrawingFill>(
     DrawingFills.HOLLOW
   )
-  const [drawingTool, setDrawingTool] = useState<'select' | 'draw' | 'erase'>(
-    'draw'
+  const [drawingTool, setDrawingTool] = useState<DrawingTool>('draw')
+  const [toolbarPosition, setToolbarPosition] = useState<ToolbarPositionType>(
+    ToolbarPositions.LEFT
   )
 
   const values = {
@@ -93,11 +96,11 @@ export const CanvasContextProvider = ({
     setDrawingFill,
     drawingTool,
     setDrawingTool,
-    userInputText,
-    setUserInputText,
     objectSelectForDelete,
     setObjectSelectForDelete,
     colorList,
+    toolbarPosition,
+    setToolbarPosition,
   }
 
   return (

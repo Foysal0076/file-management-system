@@ -2,14 +2,24 @@ import { Typography } from '@mui/material'
 import clsx from 'clsx'
 
 import { useCanvasContext } from '@/context/CanvasContext'
+import { ToolbarPositions } from '@/utils/constants/common'
 
 const ColorSelect = () => {
-  const { drawingColor, setDrawingColor, colorList } = useCanvasContext()
+  const { drawingColor, toolbarPosition, setDrawingColor, colorList } =
+    useCanvasContext()
 
   const isPickedColor = drawingColor.startsWith('#')
-  console.log({ drawingColor })
+  const isRight = toolbarPosition === ToolbarPositions.RIGHT
+  const isLeft = toolbarPosition === ToolbarPositions.LEFT
+  const isTop = toolbarPosition === ToolbarPositions.TOP
+
   return (
-    <div className={`flex flex-col gap-4 `}>
+    <div
+      className={clsx(
+        `flex gap-4`,
+        { 'max-w-[17rem] flex-row': isTop },
+        { 'xl:flex-col': isLeft || isRight }
+      )}>
       <Typography>Colors</Typography>
       <ul className='colors flex justify-between gap-2'>
         {colorList.map((color) => (
