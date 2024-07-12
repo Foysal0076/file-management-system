@@ -27,8 +27,17 @@ pnpm dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ### Login credentials
+
 #### email: test@foy.com
+
 #### password: Test1234
 
 ## To visit the DEMO:
+
 https://file-management-and-drawing.vercel.app
+
+## Note
+
+I believe the time allocated for the task was quite limited to implement all the features described. Nonetheless, I successfully implemented user authentication and route protection using NextAuth. Additionally, I developed a file explorer/management system using an Amazon S3 bucket. The file management features I implemented include fetching files and folders, creating new sub-folders, navigating through folders, uploading images and PDFs, and previewing them.
+
+Regarding the drawing functionality, it proved to be more complex and required a significant amount of time. Nevertheless, I was able to implement some drawing features and enable downloading the drawings as images.
