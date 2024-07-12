@@ -1,4 +1,5 @@
 'use client'
+import { Button } from '@mui/material'
 import { signIn } from 'next-auth/react'
 
 const LoginForm = () => {
@@ -29,6 +30,7 @@ const LoginForm = () => {
             className='shadow text-gray-700 focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight focus:outline-none'
             id='email'
             type='email'
+            defaultValue='test@foy.com'
             placeholder='Enter your email'
           />
         </div>
@@ -42,15 +44,14 @@ const LoginForm = () => {
             className='shadow text-gray-700 focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight focus:outline-none'
             id='password'
             type='password'
+            defaultValue='Test1234'
             placeholder='Enter your password'
           />
         </div>
         <div className='flex items-center justify-center'>
-          <button
-            className='focus:shadow-outline rounded bg-primary-500 px-4 py-2 font-bold text-neutral-0 hover:bg-primary-700 focus:outline-none'
-            type='submit'>
+          <Button color='inherit' variant='outlined' type='submit'>
             Log In
-          </button>
+          </Button>
         </div>
       </form>
     </div>
